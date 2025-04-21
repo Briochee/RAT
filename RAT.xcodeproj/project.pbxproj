@@ -7,40 +7,53 @@
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
-		28659C472DB6A52E00B31044 /* PBXContainerItemProxy */ = {
+		28659C832DB6AD8A00B31044 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 28659C302DB6A52D00B31044 /* Project object */;
+			containerPortal = 28659C642DB6AD8900B31044 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 28659C372DB6A52D00B31044;
+			remoteGlobalIDString = 28659C6B2DB6AD8900B31044;
 			remoteInfo = RAT;
 		};
-		28659C512DB6A52E00B31044 /* PBXContainerItemProxy */ = {
+		28659C8D2DB6AD8A00B31044 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 28659C302DB6A52D00B31044 /* Project object */;
+			containerPortal = 28659C642DB6AD8900B31044 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 28659C372DB6A52D00B31044;
+			remoteGlobalIDString = 28659C6B2DB6AD8900B31044;
 			remoteInfo = RAT;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		28659C382DB6A52D00B31044 /* RAT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RAT.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		28659C462DB6A52E00B31044 /* RATTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RATTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		28659C502DB6A52E00B31044 /* RATUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RATUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		28659C6C2DB6AD8900B31044 /* RAT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RAT.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		28659C822DB6AD8A00B31044 /* RATTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RATTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		28659C8C2DB6AD8A00B31044 /* RATUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RATUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		28659C942DB6AD8A00B31044 /* Exceptions for "RAT" folder in "RAT" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 28659C6B2DB6AD8900B31044 /* RAT */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		28659C3A2DB6A52D00B31044 /* RAT */ = {
+		28659C6E2DB6AD8900B31044 /* RAT */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				28659C942DB6AD8A00B31044 /* Exceptions for "RAT" folder in "RAT" target */,
+			);
 			path = RAT;
 			sourceTree = "<group>";
 		};
-		28659C492DB6A52E00B31044 /* RATTests */ = {
+		28659C852DB6AD8A00B31044 /* RATTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = RATTests;
 			sourceTree = "<group>";
 		};
-		28659C532DB6A52E00B31044 /* RATUITests */ = {
+		28659C8F2DB6AD8A00B31044 /* RATUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = RATUITests;
 			sourceTree = "<group>";
@@ -48,21 +61,21 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		28659C352DB6A52D00B31044 /* Frameworks */ = {
+		28659C692DB6AD8900B31044 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		28659C432DB6A52E00B31044 /* Frameworks */ = {
+		28659C7F2DB6AD8A00B31044 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		28659C4D2DB6A52E00B31044 /* Frameworks */ = {
+		28659C892DB6AD8A00B31044 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -72,22 +85,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		28659C2F2DB6A52D00B31044 = {
+		28659C632DB6AD8900B31044 = {
 			isa = PBXGroup;
 			children = (
-				28659C3A2DB6A52D00B31044 /* RAT */,
-				28659C492DB6A52E00B31044 /* RATTests */,
-				28659C532DB6A52E00B31044 /* RATUITests */,
-				28659C392DB6A52D00B31044 /* Products */,
+				28659C6E2DB6AD8900B31044 /* RAT */,
+				28659C852DB6AD8A00B31044 /* RATTests */,
+				28659C8F2DB6AD8A00B31044 /* RATUITests */,
+				28659C6D2DB6AD8900B31044 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		28659C392DB6A52D00B31044 /* Products */ = {
+		28659C6D2DB6AD8900B31044 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				28659C382DB6A52D00B31044 /* RAT.app */,
-				28659C462DB6A52E00B31044 /* RATTests.xctest */,
-				28659C502DB6A52E00B31044 /* RATUITests.xctest */,
+				28659C6C2DB6AD8900B31044 /* RAT.app */,
+				28659C822DB6AD8A00B31044 /* RATTests.xctest */,
+				28659C8C2DB6AD8A00B31044 /* RATUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,134 +108,134 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		28659C372DB6A52D00B31044 /* RAT */ = {
+		28659C6B2DB6AD8900B31044 /* RAT */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 28659C5A2DB6A52E00B31044 /* Build configuration list for PBXNativeTarget "RAT" */;
+			buildConfigurationList = 28659C952DB6AD8A00B31044 /* Build configuration list for PBXNativeTarget "RAT" */;
 			buildPhases = (
-				28659C342DB6A52D00B31044 /* Sources */,
-				28659C352DB6A52D00B31044 /* Frameworks */,
-				28659C362DB6A52D00B31044 /* Resources */,
+				28659C682DB6AD8900B31044 /* Sources */,
+				28659C692DB6AD8900B31044 /* Frameworks */,
+				28659C6A2DB6AD8900B31044 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				28659C3A2DB6A52D00B31044 /* RAT */,
+				28659C6E2DB6AD8900B31044 /* RAT */,
 			);
 			name = RAT;
 			packageProductDependencies = (
 			);
 			productName = RAT;
-			productReference = 28659C382DB6A52D00B31044 /* RAT.app */;
+			productReference = 28659C6C2DB6AD8900B31044 /* RAT.app */;
 			productType = "com.apple.product-type.application";
 		};
-		28659C452DB6A52E00B31044 /* RATTests */ = {
+		28659C812DB6AD8A00B31044 /* RATTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 28659C5D2DB6A52E00B31044 /* Build configuration list for PBXNativeTarget "RATTests" */;
+			buildConfigurationList = 28659C9A2DB6AD8A00B31044 /* Build configuration list for PBXNativeTarget "RATTests" */;
 			buildPhases = (
-				28659C422DB6A52E00B31044 /* Sources */,
-				28659C432DB6A52E00B31044 /* Frameworks */,
-				28659C442DB6A52E00B31044 /* Resources */,
+				28659C7E2DB6AD8A00B31044 /* Sources */,
+				28659C7F2DB6AD8A00B31044 /* Frameworks */,
+				28659C802DB6AD8A00B31044 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				28659C482DB6A52E00B31044 /* PBXTargetDependency */,
+				28659C842DB6AD8A00B31044 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				28659C492DB6A52E00B31044 /* RATTests */,
+				28659C852DB6AD8A00B31044 /* RATTests */,
 			);
 			name = RATTests;
 			packageProductDependencies = (
 			);
 			productName = RATTests;
-			productReference = 28659C462DB6A52E00B31044 /* RATTests.xctest */;
+			productReference = 28659C822DB6AD8A00B31044 /* RATTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		28659C4F2DB6A52E00B31044 /* RATUITests */ = {
+		28659C8B2DB6AD8A00B31044 /* RATUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 28659C602DB6A52E00B31044 /* Build configuration list for PBXNativeTarget "RATUITests" */;
+			buildConfigurationList = 28659C9D2DB6AD8A00B31044 /* Build configuration list for PBXNativeTarget "RATUITests" */;
 			buildPhases = (
-				28659C4C2DB6A52E00B31044 /* Sources */,
-				28659C4D2DB6A52E00B31044 /* Frameworks */,
-				28659C4E2DB6A52E00B31044 /* Resources */,
+				28659C882DB6AD8A00B31044 /* Sources */,
+				28659C892DB6AD8A00B31044 /* Frameworks */,
+				28659C8A2DB6AD8A00B31044 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				28659C522DB6A52E00B31044 /* PBXTargetDependency */,
+				28659C8E2DB6AD8A00B31044 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				28659C532DB6A52E00B31044 /* RATUITests */,
+				28659C8F2DB6AD8A00B31044 /* RATUITests */,
 			);
 			name = RATUITests;
 			packageProductDependencies = (
 			);
 			productName = RATUITests;
-			productReference = 28659C502DB6A52E00B31044 /* RATUITests.xctest */;
+			productReference = 28659C8C2DB6AD8A00B31044 /* RATUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		28659C302DB6A52D00B31044 /* Project object */ = {
+		28659C642DB6AD8900B31044 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
-					28659C372DB6A52D00B31044 = {
+					28659C6B2DB6AD8900B31044 = {
 						CreatedOnToolsVersion = 16.3;
 					};
-					28659C452DB6A52E00B31044 = {
+					28659C812DB6AD8A00B31044 = {
 						CreatedOnToolsVersion = 16.3;
-						TestTargetID = 28659C372DB6A52D00B31044;
+						TestTargetID = 28659C6B2DB6AD8900B31044;
 					};
-					28659C4F2DB6A52E00B31044 = {
+					28659C8B2DB6AD8A00B31044 = {
 						CreatedOnToolsVersion = 16.3;
-						TestTargetID = 28659C372DB6A52D00B31044;
+						TestTargetID = 28659C6B2DB6AD8900B31044;
 					};
 				};
 			};
-			buildConfigurationList = 28659C332DB6A52D00B31044 /* Build configuration list for PBXProject "RAT" */;
+			buildConfigurationList = 28659C672DB6AD8900B31044 /* Build configuration list for PBXProject "RAT" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 28659C2F2DB6A52D00B31044;
+			mainGroup = 28659C632DB6AD8900B31044;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 28659C392DB6A52D00B31044 /* Products */;
+			productRefGroup = 28659C6D2DB6AD8900B31044 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				28659C372DB6A52D00B31044 /* RAT */,
-				28659C452DB6A52E00B31044 /* RATTests */,
-				28659C4F2DB6A52E00B31044 /* RATUITests */,
+				28659C6B2DB6AD8900B31044 /* RAT */,
+				28659C812DB6AD8A00B31044 /* RATTests */,
+				28659C8B2DB6AD8A00B31044 /* RATUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		28659C362DB6A52D00B31044 /* Resources */ = {
+		28659C6A2DB6AD8900B31044 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		28659C442DB6A52E00B31044 /* Resources */ = {
+		28659C802DB6AD8A00B31044 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		28659C4E2DB6A52E00B31044 /* Resources */ = {
+		28659C8A2DB6AD8A00B31044 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -232,21 +245,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		28659C342DB6A52D00B31044 /* Sources */ = {
+		28659C682DB6AD8900B31044 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		28659C422DB6A52E00B31044 /* Sources */ = {
+		28659C7E2DB6AD8A00B31044 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		28659C4C2DB6A52E00B31044 /* Sources */ = {
+		28659C882DB6AD8A00B31044 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -256,20 +269,76 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		28659C482DB6A52E00B31044 /* PBXTargetDependency */ = {
+		28659C842DB6AD8A00B31044 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 28659C372DB6A52D00B31044 /* RAT */;
-			targetProxy = 28659C472DB6A52E00B31044 /* PBXContainerItemProxy */;
+			target = 28659C6B2DB6AD8900B31044 /* RAT */;
+			targetProxy = 28659C832DB6AD8A00B31044 /* PBXContainerItemProxy */;
 		};
-		28659C522DB6A52E00B31044 /* PBXTargetDependency */ = {
+		28659C8E2DB6AD8A00B31044 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 28659C372DB6A52D00B31044 /* RAT */;
-			targetProxy = 28659C512DB6A52E00B31044 /* PBXContainerItemProxy */;
+			target = 28659C6B2DB6AD8900B31044 /* RAT */;
+			targetProxy = 28659C8D2DB6AD8A00B31044 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		28659C582DB6A52E00B31044 /* Debug */ = {
+		28659C962DB6AD8A00B31044 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TMWU636P3Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RAT/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Briochee.RAT;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		28659C972DB6AD8A00B31044 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TMWU636P3Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RAT/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Briochee.RAT;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		28659C982DB6AD8A00B31044 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -322,16 +391,18 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		28659C592DB6A52E00B31044 /* Release */ = {
+		28659C992DB6AD8A00B31044 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -378,92 +449,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		28659C5B2DB6A52E00B31044 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = RAT/RAT.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = TMWU636P3Y;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Briochee.RAT;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				REGISTER_APP_GROUPS = YES;
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.4;
-			};
-			name = Debug;
-		};
-		28659C5C2DB6A52E00B31044 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = RAT/RAT.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = TMWU636P3Y;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 15.3;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Briochee.RAT;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				REGISTER_APP_GROUPS = YES;
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.4;
-			};
-			name = Release;
-		};
-		28659C5E2DB6A52E00B31044 /* Debug */ = {
+		28659C9B2DB6AD8A00B31044 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -472,21 +468,17 @@
 				DEVELOPMENT_TEAM = TMWU636P3Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
-				MACOSX_DEPLOYMENT_TARGET = 15.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Briochee.RATTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RAT.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RAT";
-				XROS_DEPLOYMENT_TARGET = 2.4;
 			};
 			name = Debug;
 		};
-		28659C5F2DB6A52E00B31044 /* Release */ = {
+		28659C9C2DB6AD8A00B31044 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -495,104 +487,90 @@
 				DEVELOPMENT_TEAM = TMWU636P3Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
-				MACOSX_DEPLOYMENT_TARGET = 15.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Briochee.RATTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RAT.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RAT";
-				XROS_DEPLOYMENT_TARGET = 2.4;
 			};
 			name = Release;
 		};
-		28659C612DB6A52E00B31044 /* Debug */ = {
+		28659C9E2DB6AD8A00B31044 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = TMWU636P3Y;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
-				MACOSX_DEPLOYMENT_TARGET = 15.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Briochee.RATUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = RAT;
-				XROS_DEPLOYMENT_TARGET = 2.4;
 			};
 			name = Debug;
 		};
-		28659C622DB6A52E00B31044 /* Release */ = {
+		28659C9F2DB6AD8A00B31044 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = TMWU636P3Y;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
-				MACOSX_DEPLOYMENT_TARGET = 15.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Briochee.RATUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = RAT;
-				XROS_DEPLOYMENT_TARGET = 2.4;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		28659C332DB6A52D00B31044 /* Build configuration list for PBXProject "RAT" */ = {
+		28659C672DB6AD8900B31044 /* Build configuration list for PBXProject "RAT" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				28659C582DB6A52E00B31044 /* Debug */,
-				28659C592DB6A52E00B31044 /* Release */,
+				28659C982DB6AD8A00B31044 /* Debug */,
+				28659C992DB6AD8A00B31044 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		28659C5A2DB6A52E00B31044 /* Build configuration list for PBXNativeTarget "RAT" */ = {
+		28659C952DB6AD8A00B31044 /* Build configuration list for PBXNativeTarget "RAT" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				28659C5B2DB6A52E00B31044 /* Debug */,
-				28659C5C2DB6A52E00B31044 /* Release */,
+				28659C962DB6AD8A00B31044 /* Debug */,
+				28659C972DB6AD8A00B31044 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		28659C5D2DB6A52E00B31044 /* Build configuration list for PBXNativeTarget "RATTests" */ = {
+		28659C9A2DB6AD8A00B31044 /* Build configuration list for PBXNativeTarget "RATTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				28659C5E2DB6A52E00B31044 /* Debug */,
-				28659C5F2DB6A52E00B31044 /* Release */,
+				28659C9B2DB6AD8A00B31044 /* Debug */,
+				28659C9C2DB6AD8A00B31044 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		28659C602DB6A52E00B31044 /* Build configuration list for PBXNativeTarget "RATUITests" */ = {
+		28659C9D2DB6AD8A00B31044 /* Build configuration list for PBXNativeTarget "RATUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				28659C612DB6A52E00B31044 /* Debug */,
-				28659C622DB6A52E00B31044 /* Release */,
+				28659C9E2DB6AD8A00B31044 /* Debug */,
+				28659C9F2DB6AD8A00B31044 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 28659C302DB6A52D00B31044 /* Project object */;
+	rootObject = 28659C642DB6AD8900B31044 /* Project object */;
 }
