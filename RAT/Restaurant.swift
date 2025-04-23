@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 struct Restaurant: Decodable {
-    // NYC Open Data fields
+    var camis: String?
     var dba: String?
     var building: String?
     var street: String?
@@ -18,9 +18,9 @@ struct Restaurant: Decodable {
     var grade: String?
     var inspection_date: String?
     var violation_description: String?
-    var grade_date: String?
     var critical_flag: String?
     var score: String?
+    var grade_date: String?
 }
 
 struct Violation {
@@ -28,4 +28,13 @@ struct Violation {
     let description: String
     let criticalFlag: String?
     let score: String?
+}
+
+struct FavoriteRestaurant: Codable {
+    let name: String
+    let grade: String?
+    let rating: Double?
+    let camis: String
+    let address: String
+    let placeID: String
 }
