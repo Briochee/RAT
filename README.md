@@ -94,6 +94,10 @@ struct FavoriteRestaurant: Codable {
 ```
 </pre>
 
+## DEMO
+![Brief Demo](Assets/brief-demo.mov)
+
+
 ## Networking
  - NYC OPEN DATA API (DOHMH New York City Restaurant Inspection Results)
  - Google Places API, Google Places SDK
