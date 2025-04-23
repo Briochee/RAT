@@ -137,7 +137,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     }
 
     func fetchPlaceDetails(for placeID: String, completion: @escaping (GooglePlaceDetails?) -> Void) {
-        guard let url = Queries.googlePlaceDetailsURL(for: placeID, apiKey: AppConfig.googleAPIKey) else {
+        guard let url = Queries.googlePlaceDetailsURL(for: placeID, sender: "SearchViewController") else {
             completion(nil)
             return
         }
@@ -171,7 +171,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
                    return false
                }),
                let ref = landscapePhoto["photo_reference"] as? String {
-                photoURL = Queries.googlePhotoURL(for: ref, apiKey: AppConfig.googleAPIKey)
+                photoURL = Queries.googlePhotoURL(for: ref, sender: "SearchViewController")
             }
 
             completion(GooglePlaceDetails(rating: rating, isOpen: isOpen, hours: hours, photoURL: photoURL))
@@ -275,7 +275,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
                     self.gradeLabel.text = "Result for: \(dba.capitalized)\nCurrent Grade: \(grade)"
                     self.selectedGrade = grade
                     self.selectedCamis = match.camis
-                    self.selectedAddress = "\(match.building ?? "") \(match.street ?? ""), \(match.zipcode ?? "")"
                 } else {
                     self.gradeLabel.text = "NYC Grade: N/A"
                 }
