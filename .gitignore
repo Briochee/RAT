@@ -64,3 +64,5 @@ fastlane/test_output
 .DS_Store
 Assets/.DS_Store
 RAT/.DS_Store
+
+RAT/Prototype.swift
