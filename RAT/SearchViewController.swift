@@ -154,7 +154,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
 
                 self.favoriteButton.isHidden = false
                 self.infoButton.isHidden = false
-                self.fetchNYCInspectionGrade(name: name, building: building, zip: zip)
+                let sanitizedBuilding = building.replacingOccurrences(of: "-", with: "")
+                self.fetchNYCInspectionGrade(name: name, building: sanitizedBuilding, zip: zip)
             }
         }
     }
@@ -225,7 +226,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
                 .first(where: { $0.grade != nil })
 
             if results.isEmpty {
-                self.fallbackSearchUsingBuildingOnly(name: name, building: building, zip: zip)
+                let sanitizedBuilding = building.replacingOccurrences(of: "-", with: "")
+                self.fallbackSearchUsingBuildingOnly(name: name, building: sanitizedBuilding, zip: zip)
                 return
             }
 
