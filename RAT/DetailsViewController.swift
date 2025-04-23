@@ -32,7 +32,7 @@ class DetailsViewController: UIViewController {
         super.viewDidLoad()
         
         guard let camis = camis,
-                  let name = name,
+                let _ = name,
                   let address = address,
                   let placeID = placeID else {
                 return
@@ -80,6 +80,13 @@ class DetailsViewController: UIViewController {
                     criticalFlag: $0.critical_flag,
                     score: $0.score
                 )
+            }
+            .sorted {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+                let d1 = formatter.date(from: $0.date) ?? Date.distantPast
+                let d2 = formatter.date(from: $1.date) ?? Date.distantPast
+                return d1 > d2
             }
 
             DispatchQueue.main.async {
