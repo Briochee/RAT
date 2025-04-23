@@ -106,7 +106,7 @@ class DetailsViewController: UIViewController {
     }
 
     func fetchPlaceDetails(for placeID: String) {
-        guard let url = Queries.googlePlaceDetailsURL(for: placeID, apiKey: AppConfig.googleAPIKey) else { return }
+        guard let url = Queries.googlePlaceDetailsURL(for: placeID, sender: "DetailsViewController") else { return }
 
         URLSession.shared.dataTask(with: url) { data, _, _ in
             guard let data = data,
@@ -124,7 +124,7 @@ class DetailsViewController: UIViewController {
 
             if let photos = result["photos"] as? [[String: Any]],
                let ref = photos.first?["photo_reference"] as? String {
-                photoURL = Queries.googlePhotoURL(for: ref, apiKey: AppConfig.googleAPIKey)
+                photoURL = Queries.googlePhotoURL(for: ref, sender: "DetailsViewController")
             }
 
             DispatchQueue.main.async {
