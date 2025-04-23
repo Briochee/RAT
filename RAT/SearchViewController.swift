@@ -43,7 +43,6 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     }
 
     override func viewDidLoad() {
-        super.viewDidLoad()
         favoriteButton.isHidden = true
         infoButton.isHidden = true
         searchBar.backgroundImage = UIImage()
@@ -86,6 +85,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     }
 
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
             self.dismiss(animated: true)
 
@@ -183,6 +183,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
             gradeLabel.text = "NYC Grade: N/A"
             return
         }
+        
 
         URLSession.shared.dataTask(with: initialURL) { data, _, _ in
             guard let data = data,
@@ -194,10 +195,10 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
             }
 
             let filtered = results.filter { $0.zipcode == zip && $0.grade != nil }
-            let mostRecent = (filtered.isEmpty ? results : filtered)
-                .filter { $0.grade != nil }
+            let source = filtered.isEmpty ? results : filtered
+            let mostRecent = source
                 .sorted { ($0.grade_date ?? "") > ($1.grade_date ?? "") }
-                .first
+                .first(where: { $0.grade != nil })
 
             if results.isEmpty {
                 self.fallbackSearchUsingBuildingOnly(name: name, building: building, zip: zip)
@@ -212,13 +213,12 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
                     score: $0.score
                 )
             }
-
+            
             DispatchQueue.main.async {
                 if let match = mostRecent, let dba = match.dba, let grade = match.grade {
                     self.gradeLabel.text = "Result for: \(dba.capitalized)\nCurrent Grade: \(grade)"
                     self.selectedGrade = grade
                     self.selectedCamis = match.camis
-
                     self.updateFavoriteButtonUI()
                 } else {
                     self.gradeLabel.text = "NYC Grade: N/A"
@@ -245,14 +245,21 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
             }
 
             let googleWords = tokenize(name)
+            
+            let filtered = results.filter { $0.zipcode == zip && $0.grade != nil }
+            let source = filtered.isEmpty ? results : filtered
 
-            let bestMatch = results
+            // Sort source by date first to prioritize recent grades
+            let sortedByDate = source
                 .filter { $0.grade != nil }
-                .max(by: { lhs, rhs in
-                    let lhsScore = tokenize(lhs.dba ?? "").intersection(googleWords).count
-                    let rhsScore = tokenize(rhs.dba ?? "").intersection(googleWords).count
-                    return lhsScore < rhsScore
-                })
+                .sorted { ($0.grade_date ?? "") > ($1.grade_date ?? "") }
+
+            // Find the best name match from the sorted list
+            let bestMatch = sortedByDate.max(by: { lhs, rhs in
+                let lhsScore = tokenize(lhs.dba ?? "").intersection(googleWords).count
+                let rhsScore = tokenize(rhs.dba ?? "").intersection(googleWords).count
+                return lhsScore < rhsScore
+            })
 
             self.selectedViolations = results.map {
                 Violation(
@@ -266,13 +273,12 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
             DispatchQueue.main.async {
                 if let match = bestMatch, let dba = match.dba, let grade = match.grade {
                     self.gradeLabel.text = "Result for: \(dba.capitalized)\nCurrent Grade: \(grade)"
-                    self.selectedGrade = match.grade
+                    self.selectedGrade = grade
                     self.selectedCamis = match.camis
                     self.selectedAddress = "\(match.building ?? "") \(match.street ?? ""), \(match.zipcode ?? "")"
                 } else {
                     self.gradeLabel.text = "NYC Grade: N/A"
                 }
-                
                 self.updateFavoriteButtonUI()
             }
         }.resume()
