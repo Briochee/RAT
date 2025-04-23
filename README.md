@@ -15,7 +15,8 @@ This app allows a user to search for restaurants in the NYC area. In doing so, t
 - The user enters the name of a restaurant; Google’s Places SDK will autofill the address.  
 - After a query to Google Places and NYC Open Data, a brief overview will be shown, displaying the current grade, Google rating, and current open status.  
 - A “Worthy” button adds the restaurant to the user’s Worthy list.  
-- A “More Info” button takes the user to a new screen, **Details**, with additional information such as hours and address.  
+- A “More Info” button takes the user to a new screen, **Details**, with additional information such as hours and address.
+- A table view showing up to 5 recently viewed restaurants, clicking on a cell takes user to Details screen (a)
 
 #### a. Details Screen  
 - The Details screen highlights the Google rating, open status, hours, and address.  
@@ -80,8 +81,8 @@ Scope
 
 ## Schema  
 The only data saved on a user’s phone is a list of restaurants they save to their “Worthy” list.
+Implemented an additional list of recently viewed restaurants (limited to 5)
 
-<pre>
 ```swift
 struct FavoriteRestaurant: Codable {
     let name: String
@@ -92,7 +93,18 @@ struct FavoriteRestaurant: Codable {
     let placeID: String
 }
 ```
-</pre>
+```swift
+struct RecentRestaurant: Codable {
+    let name: String
+    let camis: String
+    let address: String
+    let placeID: String
+    let grade: String?
+    let rating: Double?
+    let viewedAt: Date
+}
+```
+
 
 ## DEMO
 ![Demo](https://submissions.us-east-1.linodeobjects.com/ios101/FhcCag0b.gif)
