@@ -38,3 +38,13 @@ struct FavoriteRestaurant: Codable {
     let address: String
     let placeID: String
 }
+
+struct RecentRestaurant: Codable {
+    let name: String
+    let camis: String
+    let address: String
+    let placeID: String
+    let grade: String?
+    let rating: Double?
+    let viewedAt: Date
+}
