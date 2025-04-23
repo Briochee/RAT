@@ -8,7 +8,7 @@
 import UIKit
 import GooglePlaces
 
-class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocompleteViewControllerDelegate {
+class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocompleteViewControllerDelegate, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var photoImageView: UIImageView!
@@ -17,6 +17,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     @IBOutlet weak var openStatusLabel: UILabel!
     @IBOutlet weak var infoButton: UIButton!
     @IBOutlet weak var favoriteButton: UIButton!
+    @IBOutlet weak var recentTableView: UITableView!
 
     var selectedName: String?
     var selectedGrade: String?
@@ -25,6 +26,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     var selectedAddress: String?
     var selectedViolations: [Violation] = []
     var selectedPlaceID: String?
+    var recentRestaurants: [RecentRestaurant] = []
     
     struct GooglePlaceDetails {
         let rating: Double?
@@ -62,14 +64,35 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
         favoriteButton.titleLabel?.lineBreakMode = .byTruncatingTail
         favoriteButton.semanticContentAttribute = .forceLeftToRight
         favoriteButton.contentHorizontalAlignment = .center
+        
+        recentTableView.delegate = self
+        recentTableView.dataSource = self
+        recentRestaurants = getRecentRestaurants()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if selectedCamis != nil {
-            updateFavoriteButtonUI()
-        }
+        // Clear current loaded restaurant data
+        selectedName = nil
+        selectedGrade = nil
+        selectedRating = nil
+        selectedCamis = nil
+        selectedAddress = nil
+        selectedPlaceID = nil
+        selectedViolations = []
+        
+        // Clear UI elements
+        searchBar.text = ""
+        photoImageView.image = UIImage(named: "RAT")
+        gradeLabel.text = ""
+        ratingLabel.text = ""
+        openStatusLabel.text = ""
+        infoButton.isHidden = true
+        favoriteButton.isHidden = true
+
+        // Reload recents and bring them into view
+        updateRecentTableVisibility()
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -184,7 +207,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
             return
         }
         
-
+        print("Inital search: ", initialURL)
+        
         URLSession.shared.dataTask(with: initialURL) { data, _, _ in
             guard let data = data,
                   let results = try? JSONDecoder().decode([Restaurant].self, from: data) else {
@@ -219,10 +243,28 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
                     self.gradeLabel.text = "Result for: \(dba.capitalized)\nCurrent Grade: \(grade)"
                     self.selectedGrade = grade
                     self.selectedCamis = match.camis
-                    self.updateFavoriteButtonUI()
+                    
+                    // recents logic
+                    if let name = self.selectedName,
+                       let address = self.selectedAddress,
+                       let placeID = self.selectedPlaceID,
+                       let camis = self.selectedCamis {
+                        let recent = RecentRestaurant(
+                            name: name,
+                            camis: camis,
+                            address: address,
+                            placeID: placeID,
+                            grade: self.selectedGrade,
+                            rating: self.selectedRating,
+                            viewedAt: Date()
+                        )
+                        self.saveRecentRestaurant(recent)
+                    }
                 } else {
                     self.gradeLabel.text = "NYC Grade: N/A"
                 }
+                self.updateFavoriteButtonUI()
+                self.updateRecentTableVisibility()
             }
         }.resume()
     }
@@ -234,6 +276,9 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
             }
             return
         }
+        
+        print("Fallback search: ", url)
+
 
         URLSession.shared.dataTask(with: url) { data, _, _ in
             guard let data = data,
@@ -275,14 +320,33 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
                     self.gradeLabel.text = "Result for: \(dba.capitalized)\nCurrent Grade: \(grade)"
                     self.selectedGrade = grade
                     self.selectedCamis = match.camis
+                    
+                    // recent logic
+                    if let name = self.selectedName,
+                       let address = self.selectedAddress,
+                       let placeID = self.selectedPlaceID,
+                       let camis = self.selectedCamis {
+                        let recent = RecentRestaurant(
+                            name: name,
+                            camis: camis,
+                            address: address,
+                            placeID: placeID,
+                            grade: self.selectedGrade,
+                            rating: self.selectedRating,
+                            viewedAt: Date()
+                        )
+                        self.saveRecentRestaurant(recent)
+                    }
                 } else {
                     self.gradeLabel.text = "NYC Grade: N/A"
                 }
                 self.updateFavoriteButtonUI()
+                self.updateRecentTableVisibility()
             }
         }.resume()
     }
     
+    // favorites implementation
     func updateFavoriteButtonUI() {
         let isFavorited = getFavorites().contains { $0.camis == selectedCamis }
         let title = isFavorited ? " Unworthy" : " Worthy"
@@ -297,7 +361,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
               let rating = selectedRating,
               let camis = selectedCamis,
               let address = selectedAddress,
-              let placeID = selectedPlaceID else {  // <-- make sure this property exists
+              let placeID = selectedPlaceID else {
             return
         }
 
@@ -340,6 +404,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
             self.performSegue(withIdentifier: "toDetails", sender: self)
     }
     
+    // send data to details view controller
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toDetails",
            let destination = segue.destination as? DetailsViewController {
@@ -349,6 +414,107 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
             destination.placeID = selectedPlaceID
         }
     }
+    
+    // recent restaurants
+    func getRecentRestaurants() -> [RecentRestaurant] {
+        guard let data = UserDefaults.standard.data(forKey: "RAT_APP_Recents"),
+              let recents = try? JSONDecoder().decode([RecentRestaurant].self, from: data) else {
+            return []
+        }
+
+        return recents.sorted { $0.viewedAt > $1.viewedAt }
+    }
+
+    func saveRecentRestaurant(_ restaurant: RecentRestaurant) {
+        var recents = getRecentRestaurants()
+
+        if let existingIndex = recents.firstIndex(where: { $0.camis == restaurant.camis }) {
+            recents.remove(at: existingIndex)
+        }
+
+        recents.insert(restaurant, at: 0)
+
+        if recents.count > 5 {
+            recents = Array(recents.prefix(5))
+        }
+
+        if let encoded = try? JSONEncoder().encode(recents) {
+            UserDefaults.standard.set(encoded, forKey: "RAT_APP_Recents")
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return recentRestaurants.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let recent = recentRestaurants[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RecentsCell", for: indexPath)
+
+        (cell.viewWithTag(20) as? UILabel)?.text = recent.name
+        if let gradeLabel = cell.viewWithTag(21) as? UILabel {
+                let rawGrade = recent.grade?.uppercased() ?? "N/A"
+                let validGrades = ["A", "B", "C"]
+                let displayGrade = validGrades.contains(rawGrade) ? rawGrade : "N/A"
+
+                gradeLabel.text = displayGrade
+                gradeLabel.textAlignment = .center
+                gradeLabel.textColor = .white
+                gradeLabel.layer.cornerRadius = gradeLabel.frame.width / 2
+                gradeLabel.clipsToBounds = true
+                gradeLabel.backgroundColor = color(forGrade: displayGrade)
+            }
+        (cell.viewWithTag(22) as? UILabel)?.text = recent.address
+        (cell.viewWithTag(23) as? UILabel)?.text = recent.rating != nil ? "⭐️ \(String(format: "%.1f", recent.rating!))" : "⭐️ N/A"
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selected = recentRestaurants[indexPath.row]
+        selectedName = selected.name
+        selectedCamis = selected.camis
+        selectedAddress = selected.address
+        selectedPlaceID = selected.placeID
+        performSegue(withIdentifier: "toDetails", sender: self)
+    }
+    
+    func updateRecentTableVisibility() {
+        let shouldShow = selectedCamis == nil && selectedName == nil
+
+        if shouldShow {
+            recentRestaurants = getRecentRestaurants()
+            recentTableView.reloadData()
+            recentTableView.alpha = 0
+            recentTableView.isHidden = false
+            view.bringSubviewToFront(recentTableView)
+
+            UIView.animate(withDuration: 0.3) {
+                self.recentTableView.alpha = 1
+            }
+        } else {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.recentTableView.alpha = 0
+            }) { _ in
+                self.recentTableView.isHidden = true
+                self.view.sendSubviewToBack(self.recentTableView)
+            }
+        }
+    }
+    
+    func color(forGrade grade: String) -> UIColor {
+        switch grade {
+        case "A":
+            return .systemGreen
+        case "B":
+            return .systemYellow
+        case "C":
+            return .systemRed
+        default:
+            return .gray
+        }
+    }
+    
 }
 
 func tokenize(_ input: String) -> Set<String> {
