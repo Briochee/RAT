@@ -80,8 +80,8 @@ Scope
 ![Final Design](Assets/Wireframe-FinalIteration.png)
 
 ## Schema  
-The only data saved on a user’s phone is a list of restaurants they save to their “Worthy” list.
-Implemented an additional list of recently viewed restaurants (limited to 5)
+    - The only data saved on a user’s phone is a list of restaurants they save to their “Worthy” list.
+    - Implemented an additional list of recently viewed restaurants (limited to 5)
 
 ```swift
 struct FavoriteRestaurant: Codable {
