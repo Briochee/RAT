@@ -130,6 +130,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="radiusChanged:" destination="VNu-p7-BSs" eventType="valueChanged" id="1BT-xR-wQF"/>
+                                    <action selector="sliderDidEnd:" destination="VNu-p7-BSs" eventType="touchUpOutside" id="NVW-fO-Yxs"/>
+                                    <action selector="sliderDidEnd:" destination="VNu-p7-BSs" eventType="touchUpInside" id="SaB-CK-40T"/>
                                 </connections>
                             </slider>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xod-dr-a60">
