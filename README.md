@@ -96,6 +96,7 @@ struct FavoriteRestaurant: Codable {
 
 ## DEMO
 ![Demo](https://submissions.us-east-1.linodeobjects.com/ios101/FhcCag0b.gif)
+[Demo](https://youtube.com/shorts/-a4BQtIlZHE?feature=share)
 
 ## Networking
  - NYC OPEN DATA API (DOHMH New York City Restaurant Inspection Results)
