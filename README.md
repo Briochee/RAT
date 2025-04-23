@@ -70,10 +70,10 @@ Scope
 
 ## Wireframes  
 ### Initial Design  
-![Initial Design](Assets/Wireframe-FirstIteration.png)  
+![Initial Design](Assets/Wireframe-FirstIteration.png)
 
 ### Second Design  
-![Second Design]()  
+![Second Design](Assets/Wireframe-SecondIteration.png)
 
 ### Final Design  
 ![Final Design]()  
