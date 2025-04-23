@@ -53,39 +53,40 @@ class InspectionsViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return violations.count * 2
+        return violations.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let violationIndex = indexPath.row / 2
-        let violation = violations[violationIndex]
+        let violation = violations[indexPath.row]
 
-        if indexPath.row % 2 == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DateScoreCell", for: indexPath)
-            if let dateLabel = cell.viewWithTag(1) as? UILabel {
-                dateLabel.text = formatDate(from: violation.date)
-            }
-            if let scoreLabel = cell.viewWithTag(2) as? UILabel {
-                let rawScore = Int(violation.score ?? "") ?? -1
-                let displayScore = rawScore >= 0 ? 100 - rawScore : -1
-                scoreLabel.text = displayScore >= 0 ? "\(displayScore)" : "N/A"
-                scoreLabel.backgroundColor = color(forScore: displayScore)
-                scoreLabel.layer.cornerRadius = scoreLabel.frame.width / 2
-                scoreLabel.clipsToBounds = true
-            }
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ViolationsCell", for: indexPath)
-            if let textView = cell.viewWithTag(300) as? UITextView {
-                let details = violation.description
-                    .components(separatedBy: CharacterSet(charactersIn: ".;"))
-                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-                    .filter { !$0.isEmpty }
-                    .joined(separator: "\n• ")
-                textView.text = "• \(details)"
-            }
-            return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "InspectionDetails", for: indexPath)
+
+        // Set the date label
+        if let dateLabel = cell.viewWithTag(1) as? UILabel {
+            dateLabel.text = formatDate(from: violation.date)
         }
+
+        // Set the score label
+        if let scoreLabel = cell.viewWithTag(2) as? UILabel {
+            let rawScore = Int(violation.score ?? "") ?? -1
+            let displayScore = rawScore >= 0 ? 100 - rawScore : -1
+            scoreLabel.text = displayScore >= 0 ? "\(displayScore)" : "N/A"
+            scoreLabel.backgroundColor = color(forScore: displayScore)
+            scoreLabel.layer.cornerRadius = scoreLabel.frame.width / 2
+            scoreLabel.clipsToBounds = true
+        }
+
+        // Set the violations description text
+        if let textView = cell.viewWithTag(300) as? UITextView {
+            let details = violation.description
+                .components(separatedBy: CharacterSet(charactersIn: ".;"))
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { !$0.isEmpty }
+                .joined(separator: "\n• ")
+            textView.text = "• \(details)"
+        }
+
+        return cell
     }
 
     func color(forScore score: Int) -> UIColor {
