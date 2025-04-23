@@ -20,14 +20,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var currentLocation: CLLocationCoordinate2D?
     var matchedCamis: String?
     var nearbyRestaurantInfo: [String: (rating: Double?, formattedAddress: String?, placeID: String)] = [:]
+    var placeIDMap: [String: (lat: Double, lng: Double, placeID: String)] = [:]
 
     override func viewDidLoad() {
-        mapView.delegate = self
         super.viewDidLoad()
 
+        mapView.delegate = self
         locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
 
         mapView.showsUserLocation = true
         radiusSlider.minimumValue = 0.25
@@ -37,10 +36,23 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         recenterButton.layer.cornerRadius = 8
         recenterButton.clipsToBounds = true
-        
+
         view.bringSubviewToFront(radiusSlider)
         view.bringSubviewToFront(radiusLabel)
         view.bringSubviewToFront(recenterButton)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        locationManager.stopUpdatingLocation()
     }
     
     override func viewDidLayoutSubviews() {
@@ -94,80 +106,81 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
 
     func fetchNearbyRestaurants() {
-        guard let location = currentLocation else { return }
-        let radiusMiles = radiusSlider.value
-        let radiusMeters = Int(radiusMiles * 1609.34)
+            guard let location = currentLocation else { return }
+            let radiusMiles = radiusSlider.value
+            let radiusMeters = Int(radiusMiles * 1609.34)
 
-        guard let url = Queries.googleNearbySearchURL(location: location, radius: radiusMeters) else { return }
+            guard let url = Queries.googleNearbySearchURL(location: location, radius: radiusMeters, sender: "MapViewController") else { return }
 
-        URLSession.shared.dataTask(with: url) { data, _, _ in
-            guard let data = data,
-                  let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                  let results = json["results"] as? [[String: Any]] else { return }
+            URLSession.shared.dataTask(with: url) { data, _, _ in
+                guard let data = data,
+                      let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                      let results = json["results"] as? [[String: Any]] else { return }
 
-            DispatchQueue.main.async {
-                self.mapView.removeAnnotations(self.mapView.annotations)
-                self.nearbyRestaurantInfo.removeAll()
+                DispatchQueue.main.async {
+                    self.mapView.removeAnnotations(self.mapView.annotations)
+                    self.nearbyRestaurantInfo.removeAll()
+                    self.placeIDMap.removeAll()
 
-                for result in results {
-                    guard let name = result["name"] as? String,
-                          let geometry = result["geometry"] as? [String: Any],
-                          let location = geometry["location"] as? [String: Any],
-                          let lat = location["lat"] as? CLLocationDegrees,
-                          let lng = location["lng"] as? CLLocationDegrees,
-                          let placeID = result["place_id"] as? String else { continue }
+                    for result in results {
+                        guard let name = result["name"] as? String,
+                              let geometry = result["geometry"] as? [String: Any],
+                              let location = geometry["location"] as? [String: Any],
+                              let lat = location["lat"] as? CLLocationDegrees,
+                              let lng = location["lng"] as? CLLocationDegrees,
+                              let placeID = result["place_id"] as? String else { continue }
 
-                    self.fetchPlaceDetails(for: placeID, name: name, lat: lat, lng: lng)
+                        self.placeIDMap[name] = (lat: lat, lng: lng, placeID: placeID)
+
+                        let annotation = MKPointAnnotation()
+                        annotation.title = name
+                        annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+                        self.mapView.addAnnotation(annotation)
+                    }
                 }
-            }
-        }.resume()
-    }
+            }.resume()
+        }
 
     func fetchPlaceDetails(for placeID: String, name: String, lat: Double, lng: Double) {
-        guard let url = Queries.googlePlaceDetailsURL(for: placeID, apiKey: AppConfig.googleAPIKey) else {
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { data, _, _ in
-            guard let data = data,
-                  let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                  let result = json["result"] as? [String: Any] else {
+            guard let url = Queries.googlePlaceDetailsURL(for: placeID, sender: "MapViewController") else {
                 return
             }
 
-            let rating = result["rating"] as? Double
-            let formattedAddress = result["formatted_address"] as? String
+            URLSession.shared.dataTask(with: url) { data, _, _ in
+                guard let data = data,
+                      let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                      let result = json["result"] as? [String: Any] else {
+                    return
+                }
 
-            DispatchQueue.main.async {
-                self.nearbyRestaurantInfo[name] = (rating: rating, formattedAddress: formattedAddress, placeID: placeID)
+                let rating = result["rating"] as? Double
+                let formattedAddress = result["formatted_address"] as? String
 
-                let annotation = MKPointAnnotation()
-                annotation.title = name
-                annotation.subtitle = formattedAddress
-                annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-                self.mapView.addAnnotation(annotation)
-            }
-        }.resume()
-    }
+                DispatchQueue.main.async {
+                    self.nearbyRestaurantInfo[name] = (rating: rating, formattedAddress: formattedAddress, placeID: placeID)
+
+                    let alert = UIAlertController(title: name, message: nil, preferredStyle: .alert)
+                    let stars = rating != nil ? "⭐️ \(String(format: "%.1f", rating!))" : "⭐️ N/A"
+                    let address = formattedAddress ?? "Address unavailable"
+                    alert.message = "\(address)\n\(stars)"
+
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                    alert.addAction(UIAlertAction(title: "View Details", style: .default, handler: { _ in
+                        self.fetchDOHData(for: name, address: address)
+                    }))
+
+                    self.present(alert, animated: true)
+                }
+            }.resume()
+        }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        guard let annotation = view.annotation,
-              let name = annotation.title ?? nil,
-              let info = nearbyRestaurantInfo[name] else { return }
+            guard let annotation = view.annotation,
+                  let name = annotation.title ?? nil,
+                  let placeInfo = placeIDMap[name] else { return }
 
-        let alert = UIAlertController(title: name, message: nil, preferredStyle: .alert)
-
-        let stars = info.rating != nil ? "⭐️ \(String(format: "%.1f", info.rating!))" : "⭐️ N/A"
-        let address = info.formattedAddress ?? "Address unavailable"
-        alert.message = "\(address)\n\(stars)"
-
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: "View Details", style: .default, handler: { _ in
-            self.fetchDOHData(for: name, address: address)
-        }))
-
-        present(alert, animated: true)
-    }
+            fetchPlaceDetails(for: placeInfo.placeID, name: name, lat: placeInfo.lat, lng: placeInfo.lng)
+        }
     
     func fetchDOHData(for name: String, address: String) {
         let tokens = tokenize(name)
