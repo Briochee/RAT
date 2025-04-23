@@ -35,7 +35,9 @@ class InspectionsViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func setupGradeCircle() {
-        let grade = nycGrade ?? "?"
+        let rawGrade = nycGrade?.uppercased() ?? ""
+        let validGrades = ["A", "B", "C"]
+        let grade = validGrades.contains(rawGrade) ? rawGrade : "N/A"
         gradeLabel.text = grade
         gradeLabel.textAlignment = .center
         gradeLabel.backgroundColor = color(for: grade)
