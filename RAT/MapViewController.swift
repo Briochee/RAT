@@ -37,6 +37,16 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         recenterButton.layer.cornerRadius = 8
         recenterButton.clipsToBounds = true
+        
+        view.bringSubviewToFront(radiusSlider)
+        view.bringSubviewToFront(radiusLabel)
+        view.bringSubviewToFront(recenterButton)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        radiusLabel.layer.cornerRadius = radiusLabel.frame.height / 2
+        radiusLabel.clipsToBounds = true
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -66,7 +76,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     @IBAction func recenterTapped(_ sender: UIButton) {
         if let location = currentLocation {
-            radiusSlider.value = 1.0
+            radiusSlider.value = 0.25
             radiusLabel.text = "Radius: 0.25 mi"
 
             let meters = 1.0 * 1609.34
