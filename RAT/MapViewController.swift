@@ -61,12 +61,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
         mapView.setRegion(region, animated: true)
     }
+    
+    @IBAction func sliderDidEnd(_ sender: UISlider) {
+        let miles = Double(sender.value)
+        radiusLabel.text = "Radius: \(String(format: "%.2f", miles)) mi"
+
+        fetchNearbyRestaurants()
+    }
 
     @IBAction func radiusChanged(_ sender: UISlider) {
         let miles = Double(sender.value)
         radiusLabel.text = "Radius: \(String(format: "%.2f", miles)) mi"
-        fetchNearbyRestaurants()
-
+        
         if let location = currentLocation {
             let meters = miles * 1609.34
             let region = MKCoordinateRegion(center: location, latitudinalMeters: meters * 2, longitudinalMeters: meters * 2)
