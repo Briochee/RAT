@@ -38,53 +38,6 @@ struct Queries {
         return URL(string: full)
     }
     
-    static func googleFindPlaceURL(for searchText: String) -> URL? {
-        let base = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
-        let input = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        let full = "\(base)?input=\(input)&inputtype=textquery&fields=place_id&key=\(AppConfig.googleAPIKey)"
-        return URL(string: full)
-    }
-    
-    static func googlePlaceDetailsURL(for placeID: String, apiKey: String) -> URL? {
-        let base = "https://maps.googleapis.com/maps/api/place/details/json"
-        let fields = "formatted_address,rating,opening_hours,photos"
-        let full = "\(base)?place_id=\(placeID)&fields=\(fields)&key=\(apiKey)"
-        return URL(string: full)
-    }
-    
-    static func googlePhotoURL(for reference: String, apiKey: String) -> URL? {
-        let base = "https://maps.googleapis.com/maps/api/place/photo"
-        let full = "\(base)?maxwidth=400&photoreference=\(reference)&key=\(AppConfig.googleAPIKey)"
-        return URL(string: full)
-    }
-    
-    static func googleTextSearchURL(for query: String, apiKey: String) -> URL? {
-        let base = "https://maps.googleapis.com/maps/api/place/textsearch/json"
-        let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        let full = "\(base)?query=\(encodedQuery)&key=\(AppConfig.googleAPIKey)"
-        return URL(string: full)
-    }
-    
-    static func fetchNYCDataCamis(_ camis: String) -> URL? {
-        let base = "https://data.cityofnewyork.us/resource/43nn-pn8j.json"
-        let appToken = AppConfig.nycAppToken
-        let encodedCamis = camis.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        let full = "\(base)?camis=\(encodedCamis)&$$app_token=\(appToken)"
-        return URL(string: full)
-    }
-    
-    static func nearbyRestaurantsURL(coordinate: CLLocationCoordinate2D, radius: Double, apiKey: String) -> URL? {
-        let locationString = "\(coordinate.latitude),\(coordinate.longitude)"
-        let urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(locationString)&radius=\(Int(radius))&type=restaurant&key=\(AppConfig.googleAPIKey)"
-        return URL(string: urlStr)
-    }
-    
-    static func googleNearbySearchURL(location: CLLocationCoordinate2D, radius: Int) -> URL? {
-        let base = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
-        let full = "\(base)?location=\(location.latitude),\(location.longitude)&radius=\(radius)&type=restaurant&key=\(AppConfig.googleAPIKey)"
-        return URL(string: full)
-    }
-    
     static func fetchNYCDataFromMap(dba name: String, building: String? = nil) -> URL? {
         let base = "https://data.cityofnewyork.us/resource/43nn-pn8j.json"
         let appToken = AppConfig.nycAppToken
@@ -107,6 +60,93 @@ struct Queries {
 
         urlString += "&$$app_token=\(appToken)"
         return URL(string: urlString)
+    }
+    
+    static func fetchNYCDataCamis(_ camis: String) -> URL? {
+        let base = "https://data.cityofnewyork.us/resource/43nn-pn8j.json"
+        let appToken = AppConfig.nycAppToken
+        let encodedCamis = camis.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let full = "\(base)?camis=\(encodedCamis)&$$app_token=\(appToken)"
+        return URL(string: full)
+    }
+    
+    static func googleFindPlaceURL(for searchText: String, sender: String? = nil) -> URL? {
+        let base = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
+        let input = searchText.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let full = "\(base)?input=\(input)&inputtype=textquery&fields=place_id&key=\(AppConfig.googleAPIKey)"
+        
+        if let sender = sender {
+            logQuery(from: sender, callee: "googleFindPlaceURL", endpoint: full)
+            }
+        
+        return URL(string: full)
+    }
+    
+    static func googlePlaceDetailsURL(for placeID: String, sender: String? = nil) -> URL? {
+        let base = "https://maps.googleapis.com/maps/api/place/details/json"
+        let fields = "formatted_address,rating,opening_hours,photos"
+        let full = "\(base)?place_id=\(placeID)&fields=\(fields)&key=\(AppConfig.googleAPIKey)"
+        
+        if let sender = sender {
+            logQuery(from: sender, callee: "googlePlaceDetailsURL", endpoint: full)
+            }
+        
+        return URL(string: full)
+    }
+    
+    static func googlePhotoURL(for reference: String, sender: String? = nil) -> URL? {
+        let base = "https://maps.googleapis.com/maps/api/place/photo"
+        let full = "\(base)?maxwidth=400&photoreference=\(reference)&key=\(AppConfig.googleAPIKey)"
+        
+        if let sender = sender {
+            logQuery(from: sender, callee: "googlePhotoURL", endpoint: full)
+            }
+        
+        return URL(string: full)
+    }
+    
+    static func googleTextSearchURL(for query: String, apiKey: String, sender: String? = nil) -> URL? {
+        let base = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+        let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let full = "\(base)?query=\(encodedQuery)&key=\(AppConfig.googleAPIKey)"
+        
+        if let sender = sender {
+            logQuery(from: sender, callee: "googleTextSearchURL", endpoint: full)
+            }
+        
+        return URL(string: full)
+    }
+    
+    static func nearbyRestaurantsURL(coordinate: CLLocationCoordinate2D, radius: Double, apiKey: String, sender: String? = nil) -> URL? {
+        let locationString = "\(coordinate.latitude),\(coordinate.longitude)"
+        let full = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(locationString)&radius=\(Int(radius))&type=restaurant&key=\(AppConfig.googleAPIKey)"
+        
+        if let sender = sender {
+            logQuery(from: sender, callee: "nearbyRestaurantsURL", endpoint: full)
+            }
+        
+        return URL(string: full)
+    }
+    
+    static func googleNearbySearchURL(location: CLLocationCoordinate2D, radius: Int, sender: String? = nil) -> URL? {
+        let base = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+        let full = "\(base)?location=\(location.latitude),\(location.longitude)&radius=\(radius)&type=restaurant&key=\(AppConfig.googleAPIKey)"
+        
+        if let sender = sender {
+            logQuery(from: sender, callee: "googleNearbySearchURL", endpoint: full)
+            }
+        
+        return URL(string: full)
+    }
+    
+    private static var debugCounter: [String: Int] = [:]
+    private static var debugOn: Bool = false
+
+    private static func logQuery(from sender: String, callee: String, endpoint: String) {
+        guard debugOn else { return }
+        debugCounter[sender, default: 0] += 1
+        let count = debugCounter[sender]!
+        print("[QUERY DEBUG] [\(sender)] [\(callee)] Call \(count)")
     }
     
 }
