@@ -76,7 +76,7 @@ Scope
 ![Second Design](Assets/Wireframe-SecondIteration.png)
 
 ### Final Design  
-![Final Design]()  
+![Final Design](Assets/Wireframe-FinalIteration.png)
 
 ## Schema  
 The only data saved on a user’s phone is a list of restaurants they save to their “Worthy” list.
