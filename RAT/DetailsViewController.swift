@@ -91,13 +91,16 @@ class DetailsViewController: UIViewController {
 
             DispatchQueue.main.async {
                 if let restaurant = mostRecent {
-                    let grade = restaurant.grade ?? "N/A"
-                    self.selectedGrade = grade
+                    let rawGrade = restaurant.grade?.uppercased() ?? "N/A"
+                    let validGrades = ["A", "B", "C"]
+                    let displayGrade = validGrades.contains(rawGrade) ? rawGrade : "N/A"
+
+                    self.selectedGrade = displayGrade
                     self.addressLabel.text = self.address ?? "Address Unavailable"
-                    self.gradeLabel.text = grade
+                    self.gradeLabel.text = displayGrade
                     self.gradeLabel.textAlignment = .center
                     self.gradeLabel.textColor = .white
-                    self.gradeLabel.backgroundColor = self.color(for: grade)
+                    self.gradeLabel.backgroundColor = self.color(for: displayGrade)
                 } else {
                     self.addressLabel.text = self.address
                 }
