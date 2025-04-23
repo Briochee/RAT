@@ -40,7 +40,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
     }
 
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
-        print("Autocomplete failed: \(error.localizedDescription)")
+        // print("Autocomplete failed: \(error.localizedDescription)")
         dismiss(animated: true)
     }
 
@@ -207,7 +207,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
             return
         }
         
-        print("Inital search: ", initialURL)
+        // print("Inital search: ", initialURL)
         
         URLSession.shared.dataTask(with: initialURL) { data, _, _ in
             guard let data = data,
@@ -277,7 +277,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, GMSAutocomple
             return
         }
         
-        print("Fallback search: ", url)
+        // print("Fallback search: ", url)
 
 
         URLSession.shared.dataTask(with: url) { data, _, _ in
