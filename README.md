@@ -76,7 +76,7 @@ Scope
 ![Second Design](Assets/Wireframe-SecondIteration.png)
 
 ### Final Design  
-![Final Design]<a href="https://submissions.us-east-1.linodeobjects.com/ios101/FhcCag0b.gif"></a>
+![Final Design](Assets/Wireframe-FinalIteration.png)
 
 ## Schema  
 The only data saved on a user’s phone is a list of restaurants they save to their “Worthy” list.
@@ -95,8 +95,7 @@ struct FavoriteRestaurant: Codable {
 </pre>
 
 ## DEMO
-![Brief Demo](Assets/brief-demo.mov)
-
+<a href="https://submissions.us-east-1.linodeobjects.com/ios101/FhcCag0b.gif">Brief Demo</a>
 
 ## Networking
  - NYC OPEN DATA API (DOHMH New York City Restaurant Inspection Results)
