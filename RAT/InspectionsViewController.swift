@@ -81,7 +81,7 @@ class InspectionsViewController: UIViewController, UITableViewDataSource, UITabl
         // Set the violations description text
         if let textView = cell.viewWithTag(300) as? UITextView {
             let details = violation.description
-                .components(separatedBy: CharacterSet(charactersIn: ".;"))
+                .components(separatedBy: " ||| ")
                 .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
                 .filter { !$0.isEmpty }
                 .joined(separator: "\n• ")
