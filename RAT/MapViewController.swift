@@ -155,6 +155,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
                 let rating = result["rating"] as? Double
                 let formattedAddress = result["formatted_address"] as? String
+                
+                // Extract address components
+                let components = result["address_components"] as? [[String: Any]]
+
+                let buildingNumber = components?
+                    .first(where: { ($0["types"] as? [String])?.contains("street_number") == true })?["short_name"] as? String
+                
+                let zip = components?
+                    .first(where: { ($0["types"] as? [String])?.contains("postal_code") == true })?["short_name"] as? String
 
                 DispatchQueue.main.async {
                     self.nearbyRestaurantInfo[name] = (rating: rating, formattedAddress: formattedAddress, placeID: placeID)
@@ -166,7 +175,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
                     alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
                     alert.addAction(UIAlertAction(title: "View Details", style: .default, handler: { _ in
-                        self.fetchDOHData(for: name, address: address)
+                        let sanitized = buildingNumber?.replacingOccurrences(of: "-", with: "")
+                        self.fetchNYCInspectionGrade(name: name, building: sanitized ?? "", zip: zip ?? "")
                     }))
 
                     self.present(alert, animated: true)
@@ -182,7 +192,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             fetchPlaceDetails(for: placeInfo.placeID, name: name, lat: placeInfo.lat, lng: placeInfo.lng)
         }
     
-    func fetchDOHData(for name: String, address: String) {
+    func fetchNYCInspectionGrade(name: String, building: String, zip: String) {
+        // print("Fetch NYC Inspection Grade Called")
         let tokens = tokenize(name)
 
         // Only use the name in the query — no building number logic
@@ -208,14 +219,66 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
                     let payload = TempRestaurantDetails(
                         name: match.dba ?? name,
-                        address: address,
+                        address: self.nearbyRestaurantInfo[name]?.formattedAddress,
                         placeID: self.nearbyRestaurantInfo[name]?.placeID,
                         camis: match.camis
                     )
 
                     self.performSegue(withIdentifier: "toDetailsFromMap", sender: payload)
                 } else {
-                    let failAlert = UIAlertController(title: "No Match", message: "Couldn't find inspection data.", preferredStyle: .alert)
+                    let sanitizedBuilding = building.replacingOccurrences(of: "-", with: "")
+                    self.fallbackSearch(name: name, building: sanitizedBuilding, zip: zip)
+                }
+            }
+        }.resume()
+    }
+    
+    func fallbackSearch(name: String, building: String, zip: String) {
+        // print("Fallback Called")
+        guard let url = Queries.nycRestaurantSearchURL(name: nil, building: building, zip: nil) else {
+            return
+        }
+        
+        // print(url)
+
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            guard let data = data,
+                  let results = try? JSONDecoder().decode([Restaurant].self, from: data) else {
+                return
+            }
+            
+            let googleWords = tokenize(name)
+            let filtered = results.filter { $0.zipcode == zip && $0.grade != nil }
+            let source = filtered.isEmpty ? results : filtered
+
+            let sortedByDate = source
+                .filter { $0.grade != nil }
+                .sorted { ($0.grade_date ?? "") > ($1.grade_date ?? "") }
+
+            let bestMatch = sortedByDate.max(by: { lhs, rhs in
+                let lhsScore = tokenize(lhs.dba ?? "").intersection(googleWords).count
+                let rhsScore = tokenize(rhs.dba ?? "").intersection(googleWords).count
+                return lhsScore < rhsScore
+            })
+
+            DispatchQueue.main.async {
+                if let match = bestMatch {
+                    self.matchedCamis = match.camis
+
+                    let payload = TempRestaurantDetails(
+                        name: match.dba ?? name,
+                        address: self.nearbyRestaurantInfo[name]?.formattedAddress,
+                        placeID: self.nearbyRestaurantInfo[name]?.placeID,
+                        camis: match.camis
+                    )
+
+                    self.performSegue(withIdentifier: "toDetailsFromMap", sender: payload)
+                } else {
+                    let failAlert = UIAlertController(
+                        title: "No Match",
+                        message: "Couldn't find inspection data.",
+                        preferredStyle: .alert
+                    )
                     failAlert.addAction(UIAlertAction(title: "OK", style: .default))
                     self.present(failAlert, animated: true)
                 }
