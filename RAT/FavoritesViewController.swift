@@ -73,18 +73,16 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
         }
 
         if let gradeLabel = cell.viewWithTag(11) as? UILabel {
-            if let gradeLabel = cell.viewWithTag(11) as? UILabel {
-                let rawGrade = restaurant.grade?.uppercased() ?? "N/A"
-                let validGrades = ["A", "B", "C"]
-                let displayGrade = validGrades.contains(rawGrade) ? rawGrade : "N/A"
-                
-                gradeLabel.text = displayGrade
-                gradeLabel.textAlignment = .center
-                gradeLabel.textColor = .white
-                gradeLabel.layer.cornerRadius = gradeLabel.frame.width / 2
-                gradeLabel.clipsToBounds = true
-                gradeLabel.backgroundColor = color(forGrade: displayGrade)
-            }
+            let rawGrade = restaurant.grade?.uppercased() ?? "N/A"
+            let validGrades = ["A", "B", "C"]
+            let displayGrade = validGrades.contains(rawGrade) ? rawGrade : "N/A"
+            
+            gradeLabel.text = displayGrade
+            gradeLabel.textAlignment = .center
+            gradeLabel.textColor = .white
+            gradeLabel.layer.cornerRadius = gradeLabel.frame.width / 2
+            gradeLabel.clipsToBounds = true
+            gradeLabel.backgroundColor = color(forGrade: displayGrade)
         }
 
         if let addressLabel = cell.viewWithTag(12) as? UILabel {
