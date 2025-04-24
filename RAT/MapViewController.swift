@@ -8,6 +8,7 @@ import UIKit
 import MapKit
 import CoreLocation
 import CoreLocationUI
+import Contacts
 
 class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
@@ -18,9 +19,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     let locationManager = CLLocationManager()
     var currentLocation: CLLocationCoordinate2D?
-    var matchedCamis: String?
-    var nearbyRestaurantInfo: [String: (rating: Double?, formattedAddress: String?, placeID: String)] = [:]
-    var placeIDMap: [String: (lat: Double, lng: Double, placeID: String)] = [:]
+    var selectedRestaurantPin: [String: String] = [:]
+    
+    struct TempRestaurantDetails {
+        let name: String
+        let address: String?
+        let placeID: String?
+        var camis: String?
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,10 +35,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         locationManager.delegate = self
 
         mapView.showsUserLocation = true
-        radiusSlider.minimumValue = 0.25
-        radiusSlider.maximumValue = 5.0
-        radiusSlider.value = 0.25
-        radiusLabel.text = "Radius: \(String(format: "%.2f", radiusSlider.value)) mi"
+        radiusSlider.minimumValue = 250
+        radiusSlider.maximumValue = 5000
+        radiusSlider.value = 1000
+        radiusLabel.text = "Radius: \(String(format: "%.0f", radiusSlider.value)) m"
 
         recenterButton.layer.cornerRadius = 8
         recenterButton.clipsToBounds = true
@@ -68,95 +74,145 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         fetchNearbyRestaurants()
         locationManager.stopUpdatingLocation()
     }
+    
+    func region(for location: CLLocationCoordinate2D, meters: Double) -> MKCoordinateRegion {
+        let factor: Double = 1
+        return MKCoordinateRegion(center: location, latitudinalMeters: meters * factor, longitudinalMeters: meters * factor)
+    }
 
     func centerMap(on coordinate: CLLocationCoordinate2D) {
-        let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+        let region = region(for: coordinate, meters: Double(radiusSlider.value))
         mapView.setRegion(region, animated: true)
     }
     
     @IBAction func sliderDidEnd(_ sender: UISlider) {
-        let miles = Double(sender.value)
-        radiusLabel.text = "Radius: \(String(format: "%.2f", miles)) mi"
+        let meters = Double(sender.value)
+        radiusLabel.text = "Radius: \(String(format: "%.0f", meters)) m"
 
         fetchNearbyRestaurants()
     }
 
     @IBAction func radiusChanged(_ sender: UISlider) {
-        let miles = Double(sender.value)
-        radiusLabel.text = "Radius: \(String(format: "%.2f", miles)) mi"
+        radiusLabel.text = "Radius: \(String(format: "%.0f", sender.value)) m"
         
         if let location = currentLocation {
-            let meters = miles * 1609.34
-            let region = MKCoordinateRegion(center: location, latitudinalMeters: meters * 2, longitudinalMeters: meters * 2)
+            let region = region(for: location, meters: Double(sender.value))
             mapView.setRegion(region, animated: true)
         }
     }
 
     @IBAction func recenterTapped(_ sender: UIButton) {
         if let location = currentLocation {
-            radiusSlider.value = 0.25
-            radiusLabel.text = "Radius: 0.25 mi"
-
-            let meters = 1.0 * 1609.34
-            let region = MKCoordinateRegion(center: location, latitudinalMeters: meters * 2, longitudinalMeters: meters * 2)
+            radiusSlider.value = 1000
+            radiusLabel.text = "Radius: 1000 m"
+            
+            let region = region(for: location, meters: 1000)
             mapView.setRegion(region, animated: true)
 
             fetchNearbyRestaurants()
         }
     }
-
-    func fetchNearbyRestaurants() {
-            guard let location = currentLocation else { return }
-            let radiusMiles = radiusSlider.value
-            let radiusMeters = Int(radiusMiles * 1609.34)
-
-            guard let url = Queries.googleNearbySearchURL(location: location, radius: radiusMeters, sender: "MapViewController") else { return }
-
-            URLSession.shared.dataTask(with: url) { data, _, _ in
-                guard let data = data,
-                      let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                      let results = json["results"] as? [[String: Any]] else { return }
-
-                DispatchQueue.main.async {
-                    self.mapView.removeAnnotations(self.mapView.annotations)
-                    self.nearbyRestaurantInfo.removeAll()
-                    self.placeIDMap.removeAll()
-
-                    for result in results {
-                        guard let name = result["name"] as? String,
-                              let geometry = result["geometry"] as? [String: Any],
-                              let location = geometry["location"] as? [String: Any],
-                              let lat = location["lat"] as? CLLocationDegrees,
-                              let lng = location["lng"] as? CLLocationDegrees,
-                              let placeID = result["place_id"] as? String else { continue }
-
-                        self.placeIDMap[name] = (lat: lat, lng: lng, placeID: placeID)
-
-                        let annotation = MKPointAnnotation()
-                        annotation.title = name
-                        annotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-                        self.mapView.addAnnotation(annotation)
-                    }
-                }
-            }.resume()
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        for annotation in mapView.annotations {
+            if let view = mapView.view(for: annotation) as? MKMarkerAnnotationView {
+                view.glyphTintColor = nil
+            }
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if annotation is MKUserLocation {
+            return nil
         }
 
-    func fetchPlaceDetails(for placeID: String, name: String, lat: Double, lng: Double) {
-            guard let url = Queries.googlePlaceDetailsURL(for: placeID, sender: "MapViewController") else {
+        let identifier = "restaurant"
+        var view = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
+
+        if view == nil {
+            view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            view?.canShowCallout = true
+        } else {
+            view?.annotation = annotation
+        }
+        
+        view?.markerTintColor = .systemRed
+        view?.displayPriority = .required
+        view?.glyphTintColor = nil
+
+        return view
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard let annotation = view.annotation else { return }
+
+        let name = annotation.title ?? "Unknown"
+        let address = annotation.subtitle ?? "Address unavailable"
+
+        selectedRestaurantPin["name"] = name ?? ""
+        selectedRestaurantPin["address"] = address ?? ""
+
+        fetchPlaceDetails(name: name ?? "", address: address ?? "")
+    }
+
+    func fetchNearbyRestaurants() {
+        guard let location = currentLocation else { return }
+        let region = region(for: location, meters: Double(radiusSlider.value))
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = "restaurant"
+        request.region = region
+
+        let search = MKLocalSearch(request: request)
+        search.start { (response, error) in
+            guard let response = response else { return }
+
+            self.mapView.removeAnnotations(self.mapView.annotations)
+            for item in response.mapItems {
+                guard let name = item.name else { continue }
+                let coordinate = item.placemark.coordinate
+                let address = CNPostalAddressFormatter.string(from: item.placemark.postalAddress ?? CNPostalAddress(), style: .mailingAddress)
+
+                let annotation = RestaurantAnnotation(
+                    title: name,
+                    subtitle: address,
+                    coordinate: coordinate
+                )
+                self.mapView.addAnnotation(annotation)
+            }
+        }
+    }
+
+    func fetchPlaceDetails(name: String, address: String) {
+        let query = "\(name) \(address)"
+        
+        guard let findPlaceURL = Queries.googleFindPlaceURL(for: query, sender: "MapViewController") else {
+            return
+        }
+
+        URLSession.shared.dataTask(with: findPlaceURL) { data, _, _ in
+            guard let data = data,
+                  let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  let candidates = json["candidates"] as? [[String: Any]],
+                  let firstCandidate = candidates.first,
+                  let placeID = firstCandidate["place_id"] as? String else {
                 return
             }
 
-            URLSession.shared.dataTask(with: url) { data, _, _ in
+            // Now get full place details using place ID
+            guard let detailsURL = Queries.googlePlaceDetailsURL(for: placeID, sender: "MapViewController") else {
+                return
+            }
+
+            URLSession.shared.dataTask(with: detailsURL) { data, _, _ in
                 guard let data = data,
                       let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                       let result = json["result"] as? [String: Any] else {
                     return
                 }
 
-                let rating = result["rating"] as? Double
+                let googleName = result["name"] as? String ?? name
                 let formattedAddress = result["formatted_address"] as? String
-                
-                // Extract address components
+                let rating = result["rating"] as? Double
                 let components = result["address_components"] as? [[String: Any]]
 
                 let buildingNumber = components?
@@ -165,34 +221,33 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 let zip = components?
                     .first(where: { ($0["types"] as? [String])?.contains("postal_code") == true })?["short_name"] as? String
 
-                DispatchQueue.main.async {
-                    self.nearbyRestaurantInfo[name] = (rating: rating, formattedAddress: formattedAddress, placeID: placeID)
+                let details = TempRestaurantDetails(
+                    name: googleName,
+                    address: formattedAddress,
+                    placeID: placeID,
+                    camis: nil
+                )
 
-                    let alert = UIAlertController(title: name, message: nil, preferredStyle: .alert)
+                DispatchQueue.main.async {
                     let stars = rating != nil ? "⭐️ \(String(format: "%.1f", rating!))" : "⭐️ N/A"
-                    let address = formattedAddress ?? "Address unavailable"
-                    alert.message = "\(address)\n\(stars)"
+                    let addressText = formattedAddress ?? "Address unavailable"
+
+                    let alert = UIAlertController(title: googleName, message: "\(addressText)\n\(stars)", preferredStyle: .alert)
 
                     alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
                     alert.addAction(UIAlertAction(title: "View Details", style: .default, handler: { _ in
-                        let sanitized = buildingNumber?.replacingOccurrences(of: "-", with: "")
-                        self.fetchNYCInspectionGrade(name: name, building: sanitized ?? "", zip: zip ?? "")
+                        let sanitized = buildingNumber?.replacingOccurrences(of: "-", with: "") ?? ""
+                        self.fetchNYCInspectionGrade(name: googleName, building: sanitized, zip: zip ?? "", payload: details)
                     }))
 
                     self.present(alert, animated: true)
                 }
+
             }.resume()
-        }
-
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-            guard let annotation = view.annotation,
-                  let name = annotation.title ?? nil,
-                  let placeInfo = placeIDMap[name] else { return }
-
-            fetchPlaceDetails(for: placeInfo.placeID, name: name, lat: placeInfo.lat, lng: placeInfo.lng)
-        }
+        }.resume()
+    }
     
-    func fetchNYCInspectionGrade(name: String, building: String, zip: String) {
+    func fetchNYCInspectionGrade(name: String, building: String, zip: String, payload: TempRestaurantDetails) {
         // print("Fetch NYC Inspection Grade Called")
         let tokens = tokenize(name)
 
@@ -215,25 +270,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
             DispatchQueue.main.async {
                 if let match = bestMatch {
-                    self.matchedCamis = match.camis
-
-                    let payload = TempRestaurantDetails(
-                        name: match.dba ?? name,
-                        address: self.nearbyRestaurantInfo[name]?.formattedAddress,
-                        placeID: self.nearbyRestaurantInfo[name]?.placeID,
-                        camis: match.camis
-                    )
-
-                    self.performSegue(withIdentifier: "toDetailsFromMap", sender: payload)
+                    var updatedPayload = payload
+                    updatedPayload.camis = match.camis
+                    self.performSegue(withIdentifier: "toDetailsFromMap", sender: updatedPayload)
                 } else {
                     let sanitizedBuilding = building.replacingOccurrences(of: "-", with: "")
-                    self.fallbackSearch(name: name, building: sanitizedBuilding, zip: zip)
+                    self.fallbackSearch(name: name, building: sanitizedBuilding, zip: zip, payload: payload)
                 }
             }
         }.resume()
     }
     
-    func fallbackSearch(name: String, building: String, zip: String) {
+    func fallbackSearch(name: String, building: String, zip: String, payload: TempRestaurantDetails) {
         // print("Fallback Called")
         guard let url = Queries.nycRestaurantSearchURL(name: nil, building: building, zip: nil) else {
             return
@@ -263,16 +311,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
             DispatchQueue.main.async {
                 if let match = bestMatch {
-                    self.matchedCamis = match.camis
-
-                    let payload = TempRestaurantDetails(
-                        name: match.dba ?? name,
-                        address: self.nearbyRestaurantInfo[name]?.formattedAddress,
-                        placeID: self.nearbyRestaurantInfo[name]?.placeID,
-                        camis: match.camis
-                    )
-
-                    self.performSegue(withIdentifier: "toDetailsFromMap", sender: payload)
+                    var updatedPayload = payload
+                    updatedPayload.camis = match.camis
+                    self.performSegue(withIdentifier: "toDetailsFromMap", sender: updatedPayload)
                 } else {
                     let failAlert = UIAlertController(
                         title: "No Match",
@@ -284,13 +325,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 }
             }
         }.resume()
-    }
-    
-    struct TempRestaurantDetails {
-        let name: String
-        let address: String?
-        let placeID: String?
-        let camis: String?
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
