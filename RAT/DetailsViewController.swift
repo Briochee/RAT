@@ -94,7 +94,7 @@ class DetailsViewController: UIViewController {
                     return d1 > d2
                 }
             
-            print(self.selectedViolations)
+            // print(self.selectedViolations)
 
             DispatchQueue.main.async {
                 if let restaurant = mostRecent {
