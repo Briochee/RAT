@@ -73,21 +73,28 @@ class DetailsViewController: UIViewController {
             let sorted = results.sorted { ($0.grade_date ?? "") > ($1.grade_date ?? "") }
             let mostRecent = sorted.first
 
-            self.selectedViolations = results.map {
-                Violation(
-                    date: $0.inspection_date ?? "Unknown Date",
-                    description: $0.violation_description ?? "No description provided.",
-                    criticalFlag: $0.critical_flag,
-                    score: $0.score
-                )
-            }
-            .sorted {
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
-                let d1 = formatter.date(from: $0.date) ?? Date.distantPast
-                let d2 = formatter.date(from: $1.date) ?? Date.distantPast
-                return d1 > d2
-            }
+            self.selectedViolations = Dictionary(grouping: results, by: { $0.inspection_date ?? "Unknown Date" })
+                .map { (date, group) in
+                    let descriptions = group.compactMap { $0.violation_description }.joined(separator: " ||| ")
+                    let criticalFlag = group.contains { $0.critical_flag == "Critical" } ? "Critical" : "Not Critical"
+                    let highestScore = group.compactMap { $0.score.flatMap(Int.init) }.max().map(String.init)
+
+                    return Violation(
+                        date: date,
+                        description: descriptions,
+                        criticalFlag: criticalFlag,
+                        score: highestScore
+                    )
+                }
+                .sorted {
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+                    let d1 = formatter.date(from: $0.date) ?? Date.distantPast
+                    let d2 = formatter.date(from: $1.date) ?? Date.distantPast
+                    return d1 > d2
+                }
+            
+            print(self.selectedViolations)
 
             DispatchQueue.main.async {
                 if let restaurant = mostRecent {
