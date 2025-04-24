@@ -84,7 +84,7 @@ struct Queries {
     
     static func googlePlaceDetailsURL(for placeID: String, sender: String? = nil) -> URL? {
         let base = "https://maps.googleapis.com/maps/api/place/details/json"
-        let fields = "formatted_address,rating,opening_hours,photos"
+        let fields = "formatted_address,rating,opening_hours,photos,address_components"
         let full = "\(base)?place_id=\(placeID)&fields=\(fields)&key=\(AppConfig.googleAPIKey)"
         
         if let sender = sender {
