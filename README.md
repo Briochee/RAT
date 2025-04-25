@@ -4,7 +4,10 @@
 1. [Overview](#overview)  
 2. [Product Spec](#product-spec)  
 3. [Wireframes](#wireframes)  
-4. [Schema](#schema)  
+4. [Schema](#schema)
+
+## DISCLAIMER
+- For this app to work, add a GOOGLE_API_KEY to Info.plist
 
 ## Overview  
 **Description**  
