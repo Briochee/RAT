@@ -7,7 +7,7 @@
 4. [Schema](#schema)
 
 ## DISCLAIMER
-- For this app to work, add a GOOGLE_API_KEY to Info.plist
+- For this app to work, add a "GOOGLE_API_KEY" to "Secrets.plist" file
 
 ## Overview  
 **Description**  
