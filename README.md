@@ -133,7 +133,7 @@ struct RecentRestaurant: Codable {
 
 
 ## DEMO
-![Demo](https://submissions.us-east-1.linodeobjects.com/ios101/FhcCag0b.gif)
+[Demo (Most Recent)](https://youtube.com/shorts/5VZE7773US8?feature=share)
 [Demo](https://youtube.com/shorts/-a4BQtIlZHE?feature=share)
 
 ## Networking

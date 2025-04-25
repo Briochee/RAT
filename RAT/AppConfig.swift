@@ -23,6 +23,6 @@ struct AppConfig {
     }
 
     static var nycAppToken: String {
-        return secrets["NYC_APP_TOKEN"] as? String ?? ""
+        return secrets["NYC_APP_TOKEN"] as? String ?? ""    
     }
 }
