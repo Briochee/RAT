@@ -34,9 +34,22 @@
 		28659C8C2DB6AD8A00B31044 /* RATUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RATUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2803BBDC2DBB3222004FBAD2 /* Exceptions for "RAT" folder in "RAT" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 28659C6B2DB6AD8900B31044 /* RAT */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		28659C6E2DB6AD8900B31044 /* RAT */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				2803BBDC2DBB3222004FBAD2 /* Exceptions for "RAT" folder in "RAT" target */,
+			);
 			path = RAT;
 			sourceTree = "<group>";
 		};
