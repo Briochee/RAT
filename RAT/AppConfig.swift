@@ -8,11 +8,21 @@
 import Foundation
 
 struct AppConfig {
+    private static let secrets: [String: Any] = {
+        guard let url = Bundle.main.url(forResource: "Secrets", withExtension: "plist"),
+              let data = try? Data(contentsOf: url),
+              let result = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any]
+        else {
+            return [:]
+        }
+        return result
+    }()
+
     static var googleAPIKey: String {
-        return Bundle.main.infoDictionary?["GOOGLE_API_KEY"] as? String ?? ""
+        return secrets["GOOGLE_API_KEY"] as? String ?? ""
     }
-    
+
     static var nycAppToken: String {
-        return Bundle.main.infoDictionary?["NYC_APP_TOKEN"] as? String ?? ""
+        return secrets["NYC_APP_TOKEN"] as? String ?? ""
     }
 }
